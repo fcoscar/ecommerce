@@ -65,3 +65,7 @@ class ShippingAddress(models.Model):
     shippingPrice = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
+# class UserCart(models.Model):
+#     _id = models.AutoField(primary_key=True, editable=False)
+#     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+#     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)

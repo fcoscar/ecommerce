@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link, useParams, useNavigate, useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {Row, Col, Image, ListGroup, Card, Button, Form} from 'react-bootstrap'
@@ -17,8 +17,9 @@ function CartPage() {
   useEffect(()=>{
     if(productId){
       dispatch(addToCart(productId,qty))
+      navigate('/cart')
     }
-  },[dispatch, productId, qty])
+  },[dispatch, productId, qty, navigate])
 
   const removeFromCartHandler = (productId) => {
     dispatch(removeFromCart(productId))
