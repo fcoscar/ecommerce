@@ -10,28 +10,30 @@ function LoginPage() {
     const [password, setPassword] = useState('')
     const dispatch = useDispatch()
     const [searchParams] = useSearchParams()
-    const redirect = searchParams.get('redirect') === null ? '/' : searchParams.get('redirect')
+    const redirect = searchParams.get('redirect') === null ? '' : searchParams.get('redirect')
     const navigate = useNavigate()
     const userLogin = useSelector(state => state.userLogin)
     const {error, loading, userInfo} = userLogin
 
+    console.log(redirect)
     useEffect(() => {
         if(userInfo){
-            navigate(redirect)
+            navigate('/' + redirect)
         }
     },[ navigate, userInfo, redirect])
 
     const submitHandler = (e) => {
         e.preventDefault()
         dispatch(login(username, password))
+        navigate('/' + redirect)
     }
 
     return (
     <FormContainer>
-        <h1> Sing In</h1>
+        <h1> Iniciar Sesion </h1>
         <Form onSubmit={submitHandler}>
             <Form.Group controlId='username'>
-                <Form.Label>Username</Form.Label>
+                <Form.Label>Usuario</Form.Label>
                 <Form.Control 
                 placeholder='Enter Username'
                 value={username}
@@ -39,7 +41,7 @@ function LoginPage() {
                 </Form.Control>
             </Form.Group>
             <Form.Group controlId='password'>
-                <Form.Label>Password</Form.Label>
+                <Form.Label>Contrasena</Form.Label>
                 <Form.Control 
                 type='password'
                 placeholder='Enter password'
@@ -47,16 +49,18 @@ function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}>
                 </Form.Control>
             </Form.Group>
-            
-            <Button
-            type='submit'
-            variant='primary'>
-                Sing in
-            </Button>
+            <div className='text-center py-3'>
+                <Button 
+                type='submit'
+                variant='primary'>
+                    Iniciar Sesion
+                </Button>
+            </div>
+
             <Row className='py-3'>
                 <Col>
-                    New Customer? <Link 
-                    to={redirect ? `/register?redirect=${redirect}` : '/register'}>Register</Link>
+                    Aun no tienes tu cuenta? <Link 
+                    to={redirect ? `/register?redirect=${redirect}` : '/register'}>Registrate</Link>
                 </Col>
             </Row>
 

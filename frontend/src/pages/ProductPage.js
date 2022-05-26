@@ -104,7 +104,7 @@ function ProductPage() {
                         <ListGroup.Item className='text-center'> 
                             <Button 
                             className='btn btn-block' 
-                            disabled={product.countInStock===0} 
+                            disabled={product.countInStock===0 || product.countInStock < 0} 
                             type='button'
                             onClick={addToCartHandler}
                             >Add to Cart</Button>

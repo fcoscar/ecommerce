@@ -16,3 +16,8 @@ h3{
 .rating span{
   margin: 0.1.rem;
 }
+
+.badge{
+  position: relative;
+  top: -2px;
+}

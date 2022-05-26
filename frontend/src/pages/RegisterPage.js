@@ -26,16 +26,16 @@ function RegisterPage() {
 
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(userRegister(first_name, last_name, username, email, password))
+        dispatch(userRegister({first_name, last_name, username, email, password}))
         navigate('/')
     }
 
   return (
     <FormContainer>
-        <h1>Sign Up</h1>
+        <h1>Crear Cuenta</h1>
         <Form onSubmit={submitHandler}>
             <FormGroup controlId='first_name'>
-                <Form.Label>First Name</Form.Label>
+                <Form.Label>Nombre</Form.Label>
                 <Form.Control
                 placeholder='Enter First Name'
                 value={first_name}
@@ -44,7 +44,7 @@ function RegisterPage() {
             </FormGroup>
 
             <FormGroup controlId='last_name'>
-                <Form.Label>Last Name</Form.Label>
+                <Form.Label>Apellidos</Form.Label>
                 <Form.Control
                 placeholder='Enter Last Name'
                 value={last_name}
@@ -53,7 +53,7 @@ function RegisterPage() {
             </FormGroup>
 
             <FormGroup controlId='username'>
-                <Form.Label>Username</Form.Label>
+                <Form.Label>Usuario</Form.Label>
                 <Form.Control
                 placeholder='Enter username'
                 value={username}
@@ -79,17 +79,19 @@ function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 ></Form.Control>
             </FormGroup>
+            <div className='text-center py-3'>
+                <Button
+                type='submit'
+                variant='primary'>
+                    Crear Cuenta
+                </Button>
+            </div>
 
-            <Button
-            type='submit'
-            variant='primary'>
-                Sign Up
-            </Button>
         </Form>    
             <Row className='py-3'>
                 <Col>
-                    Already have an account? <Link 
-                    to='/login'>Log In</Link>
+                    Ya tienes una cuenta? <Link 
+                    to='/login'>Iniciar Sesion</Link>
                 </Col>
             </Row>
 

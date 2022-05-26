@@ -5,7 +5,8 @@ from .models import *
 from .serializers import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework import status
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -47,6 +48,13 @@ def getUserProfile(request):
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def getUsers(request):
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data)
+
 @api_view(['POST'])
 def createUser(request):
     data = request.data
@@ -61,21 +69,23 @@ def createUser(request):
     return Response(serializer.data)
 
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def udpateUser(request):
     user = request.user
-    serializer = UserSerializerWithToken(user, many=False)
     data = request.data
-    user.first_name = data['first_name']
-    user.last_name = data['last_name']
-    user.email = data['email']
-    user.username = data['username']
+    if request.user.email == data['email']:
+        serializer = UserSerializerWithToken(user, many=False)
+        user.first_name = data['first_name']
+        user.last_name = data['last_name']
+        user.username = data['username']
 
-    if data['password'] != '':
-        user.password = make_password(data['password'])
+        if data['password'] != '':
+            user.password = make_password(data['password'])
 
-    user.save()
-
-    return Response(serializer.data)
+        user.save()
+        return Response(serializer.data)
+    else:
+        return Response({'detail': 'No puedes acceder aqui'}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['GET'])
 def getProducts(request):
@@ -87,4 +97,70 @@ def getProducts(request):
 def getProduct(request, pk):
     product = Product.objects.get(_id=pk)
     serializer = ProductSerializer(product, many=False)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getOrderById(request, pk):
+    user = request.user
+    try:
+        order = Order.objects.get(_id=pk)
+        if user.is_staff or order.user == user:
+            serializer = OrderSerializer(order, many=False)
+            return Response(serializer.data)
+        else:
+            Response({'detail': 'You are not authorized to view this order'}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response({'detail': 'Order does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def addOrderItems(request):
+    user = request.user
+    data = request.data
+    orderItems = data['orderItems']
+
+    if orderItems and len(orderItems) == 0:
+        return Response({'detail': 'No order Items'}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        order = Order.objects.create(
+            user=user,
+            paymentMethod=data['paymentMethod'],
+            shippingPrice=data['shippingPrice'],
+            totalPrice=data['totalPrice'],
+            taxPrice=data['taxPrice']
+        )
+
+        shipping = ShippingAddress.objects.create(
+            order=order,
+            address=data['shippingAddress']['address'],
+            city=data['shippingAddress']['city'],
+            postalCode=data['shippingAddress']['postalCode'],
+            aprt=data['shippingAddress']['aprt'],
+            country='Republica Dominicana'
+
+        )
+
+        for i in orderItems:
+            product = Product.objects.get(_id=i['product'])
+            item = OrderItem.objects.create(
+                product=product,
+                order=order,
+                name=product.name,
+                qty=i['qty'],
+                price=i['price'],
+                image=product.image.url
+            )
+
+            product.countInStock -= int(item.qty)
+            product.save()
+        serializer = OrderSerializer(order, many=False)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getUserOrders(request):
+    user = request.user
+    orders = Order.objects.filter(user=user)
+    serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)

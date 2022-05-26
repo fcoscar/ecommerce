@@ -18,33 +18,40 @@ function Header() {
   }
 
   return (
-    <header>
-      <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+    <header >
+      <Navbar className="py-1" bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
-          <Navbar.Brand >Home</Navbar.Brand>
+          <Navbar.Brand>WAO</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <span>{cartItems.reduce((acc, item) => parseInt(acc) + parseInt(item.qty), 0)}</span>
               
               <LinkContainer to='/cart/'>
-              <Nav.Link ><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>
+                
+                <Nav.Link>
+                  <span className="badge bg-danger rounded-pill">
+                    {cartItems.reduce((acc, item) => parseInt(acc) + parseInt(item.qty), 0)}
+                  </span>
+                  <i className="fa-solid fa-cart-shopping justify-content-between">
+                  </i>                 
+                  cart
+                  </Nav.Link>
               </LinkContainer>
               
-              <LinkContainer to='/login/'>
               
+              <LinkContainer to='/login/'>             
               {userInfo ? (
-                <NavDropdown title={userInfo.username} id='username'>
+                <NavDropdown title={userInfo.name} id='username'>
                   <LinkContainer to='/profile'>
-                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                    <NavDropdown.Item>Perfil</NavDropdown.Item>
                   </LinkContainer>
 
-                  <NavDropdown.Item onClick={logoutHandler}>Log Out</NavDropdown.Item>
+                  <NavDropdown.Item onClick={logoutHandler}>Cerrar Sesion</NavDropdown.Item>
                 </NavDropdown>
               ) : (
-                <Nav.Link><i className="fas fa-user"></i>Login</Nav.Link>
+                <Nav.Link><i className="fas fa-user"></i>Inicia Sesion</Nav.Link>
               )}
               {/* {userInfo ? 
               <Nav.Link><i className="fas fa-user"></i>{userInfo.username}</Nav.Link>
