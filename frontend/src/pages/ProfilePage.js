@@ -135,7 +135,7 @@ function ProfilePage() {
                             {orders.map(order => 
                                 <tr>
                                     <td>{order._id}</td>
-                                    <td>{Moment(order.createdAt).format('DD-MM-YYYY hh:mm')    }</td>
+                                    <td>{Moment(order.createdAt).format('DD-MM-YYYY hh:mm')}</td>
                                     <td>${order.totalPrice}</td>
                                     <td><i className='fa-solid fa-check'></i></td>
                                     <td><LinkContainer to={`/order/${order._id}`} ><Button classNam='btn-sm'>Detalles</Button></LinkContainer></td>

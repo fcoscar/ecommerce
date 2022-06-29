@@ -17,5 +17,12 @@
       <jdbc-url>jdbc:mysql://127.0.0.1:3306/ecommerce</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="@database-1.c4at5bv0pvgi.us-east-1.rds.amazonaws.com" uuid="11c1e2c9-1f65-4b8a-8777-addab9abf4a7">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://database-1.c4at5bv0pvgi.us-east-1.rds.amazonaws.com:3306</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
