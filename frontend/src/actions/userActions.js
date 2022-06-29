@@ -18,7 +18,41 @@ import {
     USER_ORDER_DETAILS_REQUEST,
     USER_ORDER_DETAILS_SUCCESS,
     USER_ORDER_DETAILS_FAIL,
+    USER_LIST_REQUEST,
+    USER_LIST_SUCCESS,
+    USER_LIST_FAIL,
+    USER_LIST_RESET,
 } from '../constants/userConstants'
+
+export const getUsers = () => async (dispatch, getState) => {
+    try{
+        dispatch({
+            type: USER_LIST_REQUEST
+        })
+        const { userLogin: {userInfo} } = getState()
+        const token = 'Bearer ' + userInfo.token
+        const response = await fetch('/users/', {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': token
+            }
+
+        })
+        const data = await response.json()
+        dispatch ({
+            type: USER_LIST_SUCCESS,
+            payload: data
+        })
+
+    }catch (error){
+        dispatch({
+            type: USER_LIST_FAIL,
+            payload: error.response && error.response.data.message
+            ? error.response.data.message : error.message
+        })
+    }
+}
 
 export const login = (username, password) =>  async (dispatch) => {
     try{
