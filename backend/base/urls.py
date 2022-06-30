@@ -11,6 +11,7 @@ urlpatterns = [
     path('users/profile/', views.getUserProfile),
     path('users/profile/update/', views.udpateUser),
     path('users/profile/create/', views.createUser),
+    path('admin/deleteUser/<str:pk>/', views.deleteUser),
     path('products/', views.getProducts),
     path('products/<str:pk>/', views.getProduct),
     path('user/orders/', views.getUserOrders),

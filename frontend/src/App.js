@@ -35,7 +35,7 @@ function App() {
             <Route path='/payment' element={<PaymentPage />} />
             <Route path='/placeorder' element={<PlaceOrderPage />} />
             <Route path='/order/:orderId' element={<OrderDetailsPage />}/>
-            <Route path='/users' element={<UsersListPage />}/>
+            <Route path='/admin/users' element={<UsersListPage />}/>
           </Routes>
         </Container>
       </main>

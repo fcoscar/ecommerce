@@ -60,6 +60,22 @@ function Header() {
                } */}
               
               </LinkContainer>
+
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown title='Admin' id='admin-menu'>
+                  <LinkContainer to='/admin/users/'>
+                    <NavDropdown.Item>Usuarios</NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to='/admin/products/'>
+                    <NavDropdown.Item>Productos</NavDropdown.Item>
+                  </LinkContainer> 
+
+                  <LinkContainer to='/admin/orders/'>
+                    <NavDropdown.Item>Ordenes</NavDropdown.Item>
+                  </LinkContainer>                     
+                </NavDropdown>
+              )}
             
             </Nav>
           </Navbar.Collapse>

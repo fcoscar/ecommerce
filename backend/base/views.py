@@ -40,6 +40,8 @@ def getRoutes(request):
     ]
     return Response(routes)
 
+# USER VIEWS
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getUserProfile(request):
@@ -86,6 +88,15 @@ def udpateUser(request):
     else:
         return Response({'detail': 'No puedes acceder aqui'}, status=status.HTTP_401_UNAUTHORIZED)
 
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def deleteUser(request, pk):
+    user = User.objects.get(id=pk)
+    user.delete()
+    return Response({'details' : 'User deleted succesufully'}, status=status.HTTP_200_OK)
+
+#PRODUCTS VIEW
+
 @api_view(['GET'])
 def getProducts(request):
     products = Product.objects.all()
@@ -97,6 +108,8 @@ def getProduct(request, pk):
     product = Product.objects.get(_id=pk)
     serializer = ProductSerializer(product, many=False)
     return Response(serializer.data)
+
+# ORDER VIEWS
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
