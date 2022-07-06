@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Button, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
-import { getUsers } from '../actions/userActions'
+import { deleteUser, getUsers } from '../actions/userActions'
 import Loader from '../components/Loader'
 
 function UsersListPage() {
@@ -14,7 +14,8 @@ function UsersListPage() {
   }, [dispatch])
 
   const deleteHandler = (id) => {
-
+    dispatch(deleteUser(id))
+    
   }
 
     
@@ -34,6 +35,7 @@ function UsersListPage() {
                   </tr>
                 </thead>
                 <tbody>
+                  
                   {users.map(user =>
                     <tr key={user.id}>
                       <td>{user.id}</td>

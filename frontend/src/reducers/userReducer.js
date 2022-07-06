@@ -21,6 +21,7 @@ import {
     USER_LIST_SUCCESS,
     USER_LIST_FAIL,
     USER_LIST_RESET,
+    USER_LIST_REMOVE
 } from '../constants/userConstants'
 
 export const usersListReducer = (state= { users: [] }, action) => {
@@ -31,6 +32,11 @@ export const usersListReducer = (state= { users: [] }, action) => {
             return {loading: false, users: action.payload}
         case USER_LIST_FAIL:
             return {loading: false, error: action.payload}
+        case USER_LIST_REMOVE:
+            return {
+                ...state,
+                users:state.users.filter(x => x.id !== action.payload)
+            }
         case USER_LIST_RESET:
             return { users: {} }
         default:

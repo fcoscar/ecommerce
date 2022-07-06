@@ -22,7 +22,45 @@ import {
     USER_LIST_SUCCESS,
     USER_LIST_FAIL,
     USER_LIST_RESET,
+    USER_DELETE_REQUEST,
+    USER_DELETE_FAIL, 
+    USER_DELETE_SUCCESS,
+    USER_LIST_REMOVE
 } from '../constants/userConstants'
+
+export const deleteUser = (id) => async (dispatch, getState) => {
+    try{
+        dispatch({
+            type: USER_DELETE_REQUEST
+        })
+        const { userLogin: {userInfo}} = getState()
+        const token = 'Bearer ' + userInfo.token
+        const response = await fetch(`/admin/deleteUser/${id}/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': token
+            }
+
+        })
+        const data = await response.json()
+        dispatch ({
+            type: USER_DELETE_SUCCESS,
+            payload: data
+        })
+        dispatch({
+            type: USER_LIST_REMOVE,
+            payload: id
+        })
+
+    }catch (error){
+        dispatch({
+            type: USER_DELETE_FAIL,
+            payload: error.response && error.response.data.message
+            ? error.response.data.message : error.message
+        })
+    }
+}
 
 export const getUsers = () => async (dispatch, getState) => {
     try{
